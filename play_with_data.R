@@ -33,7 +33,7 @@ ang_test <- angdata[(train_indices+1):N]
 library(depmixS4)
 
 # Hyperparameters and priors.
-nstates <- 25 # Fixed number of states. 
+nstates <- 30 # Fixed number of states. 
 pi <- rep(1, nstates)/nstates # Uniform prior state probabilities. 
 
 # Try to fit a HMM. 
@@ -71,8 +71,9 @@ transition_matrix <- matrix(getpars(fm)[(nstates+1):(nstates^2+nstates)],
 #save(transition_matrix, file = "transition_matrix_full.RData") # Save the transition matrix such that we can load it locally.
 load("transition_matrix_full.RData", verbose = T)
 
-# Plot the transition matrix. Try to rearrange it such that we can c
+# Plot the transition matrix. 
 transition_matrix %>% heatmap(Colv = NA)
+transition_matrix %>% heatmap(Colv = NA, Rowv = NA) # Heatmap without the rearrangement because of the dendrogram.
 
 # Try to do PCA on transition matrix. 
 pca <- princomp(transition_matrix)
@@ -112,4 +113,4 @@ rect.hclust(hcl, k = 4, border = 2:6)
 grouped_inferred_states <- cut[inferred_states]
 
 # Group the angle data according to the states and then eventually by the cuts.
-# Not sure how to do this right now?! HELP
+# Not sure how to do this right now?! HEEEEELP
