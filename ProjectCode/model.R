@@ -27,7 +27,7 @@ for (i in 1:n_neurons){
 
 # Part 1: 
 model <- depmix(formel, family = families, data = celldata_df, 
-                nstates = nstates, instart = pies) #  try to use pi instead for the initial state probabilities here. 
+                nstates = nstates, instart = pies) 
 fm <- fit(model)
 
 write.csv((fm@posterior), "../posterior.csv")
@@ -41,7 +41,7 @@ write.csv(transition_matrix, "../trans_matrix.csv")
 # Part 2: Only considering active neurons
 
 model2 <- depmix(formel, family = families, data = celldata_active_df, 
-                nstates = nstates, instart = pies) #  try to use pi instead for the initial state probabilities here. 
+                nstates = nstates, instart = pies) 
 fm2 <- fit(model)
 
 write.csv((fm@posterior), "../posterior2.csv")
@@ -64,7 +64,8 @@ pdf(file = "trans_matrix.pdf", width = 9, height = 5)
 transition_matrix %>% heatmap(Rowv = NA)
 dev.off()
 pdf(file = "trans_matrix2.pdf", width = 9, height = 5)
-transition_matrix %>% heatmap(Colv = NA, Rowv = NA) # Heatmap without the rearrangement because of the dendrogram.
+# Heatmap without the rearrangement because of the dendrogram.
+transition_matrix %>% heatmap(Colv = NA, Rowv = NA) 
 dev.off()
 
 # Try to do PCA on transition matrix. 
@@ -83,7 +84,7 @@ plt <- tibble(df) %>%
   theme_minimal()
 
 pdf(file = "PCA.pdf", width = 9, height = 5)
-print(plt) # Not at all a circle :))
+print(plt)
 dev.off()
 
 # Try with a npn-linear dim. red. method, since PCA does not capture a lot of the variability in the first components. 
@@ -99,8 +100,7 @@ pdf(file = "t-SNE.pdf", width = 9, height = 5)
 print(t_sne)
 dev.off()
 
-# Perhaps try to group the angular data in each state together, to see if each state "takes up" one specific direction.
-# Then we could plot the recorded angles and see if they "coincide" with the states. 
+# Hierarchical clusterings
 hcl <- hclust(dist(transition_matrix), method = "ward.D")
 cut <- cutree(hcl, k = 4) # We cut it into 4 groups. 
 
