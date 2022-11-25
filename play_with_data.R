@@ -60,7 +60,7 @@ fm <- fit(model)
 summary(fm)
 
 save(fm, file = "fitted_HMM.RData") # Save the fitted model such that we can load it locally.
-#load("fitted_HMM.RData", verbose = T)
+load("fitted_HMM.RData", verbose = T)
 
 # Now, what can we do with the states?
 # How has Ben plotted them in the lecture on project description?
@@ -72,15 +72,15 @@ table(inferred_states)
 transition_matrix <- matrix(getpars(fm)[(nstates+1):(nstates^2+nstates)],
                             byrow=TRUE,nrow=nstates,ncol=nstates)
 
-save(transition_matrix, file = "transition_matrix_full.RData") # Save the transition matrix such that we can load it locally.
-load("transition_matrix_full.RData", verbose = T)
+#save(transition_matrix, file = "transition_matrix_full.RData") # Save the transition matrix such that we can load it locally.
+#load("transition_matrix_full.RData", verbose = T)
 
 # Plot the transition matrix. 
 pdf(file = "trans_matrix.pdf", width = 9, height = 5)
-transition_matrix %>% heatmap(Rowv = NA)
+transition_matrix %>% heatmap(Rowv = NA, Colv = NA)
 dev.off()
-pdf(file = "trans_matrix2.pdf", width = 9, height = 5)
-transition_matrix %>% heatmap(Colv = NA, Rowv = NA) # Heatmap without the rearrangement because of the dendrogram.
+pdf(file = "trans_matrix2.pdf", width = 9, height = 5) 
+transition_matrix %>% heatmap(Rowv = NA) # Heatmap without the rearrangement because of the dendrogram.
 dev.off()
 
 # Try to do PCA on transition matrix. 
@@ -104,8 +104,8 @@ dev.off()
 
 # Try with a npn-linear dim. red. method, since PCA does not capture a lot of the variability in the first components. 
 library(Rtsne)
-tsne_out <- Rtsne(transition_matrix, pca = F, perplexity = as.integer(30/3)-1, theta = 0.8)
-t_sne <- data.frame(cbind(tsne_out$Y,"state"=1:15)) %>% 
+tsne_out <- Rtsne(transition_matrix, pca = T, perplexity = as.integer(nstates/3)-1, theta = 0.8)
+t_sne <- data.frame(cbind(tsne_out$Y,"state"=1:nstates)) %>% 
   ggplot(aes(x = V1, y = V2)) +
   geom_point() +
   geom_text(aes(label = state), nudge_x = 1.5) +

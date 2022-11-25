@@ -1,6 +1,7 @@
 # Uncovering Neural States in Rodents
 
-This repository contains the code and data used in a semester project in TMA4285 - Time Series. 
+This repository contains the code and data used in a semester project in TMA4285 - Time Series. The report can be read [here](report_time_series_project.pdf). The report will be graded as approved or not-approved.
+
 Running the supplied code (runHMMonmousedata.py / shortpostprocess.py) is not necessary, but an installation guide is provided below.
 
 
